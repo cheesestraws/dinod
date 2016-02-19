@@ -1,5 +1,10 @@
 package main
 
+import (
+	"errors"
+	"fmt"
+)
+
 type Dino struct {
 	Name         string         `json:"name"`
 	FriendlyName string         `json:"friendlyName"`
@@ -8,24 +13,26 @@ type Dino struct {
 	Actuators    []DinoActuator `json:"actuators"`
 }
 
-func (d Dino) Valid() bool {
+func (d Dino) Valid() error {
 	if d.Name == "" {
-		return false
+		return errors.New("dinosaur has no name")
 	}
 
 	for _, sensor := range d.Sensors {
-		if !sensor.Valid() {
-			return false
+		err := sensor.Valid()
+		if err != nil {
+			return err
 		}
 	}
 
 	for _, actuator := range d.Actuators {
-		if !actuator.Valid() {
-			return false
+		err := actuator.Valid()
+		if err != nil {
+			return err
 		}
 	}
 
-	return true
+	return nil
 }
 
 type Dinos []Dino
@@ -46,16 +53,16 @@ type DinoSensor struct {
 	Pin          int    `json:"pin"`
 }
 
-func (d DinoSensor) Valid() bool {
+func (d DinoSensor) Valid() error {
 	if d.Name == "" {
-		return false
+		return errors.New("sensor has no name")
 	}
 
 	if d.Type != "pulse" {
-		return false
+		return errors.New(fmt.Sprintf("sensor %v has an invalid type", d.Name))
 	}
 
-	return true
+	return nil
 }
 
 type DinoActuator struct {
@@ -65,14 +72,14 @@ type DinoActuator struct {
 	Pin          int    `json:"pin"`
 }
 
-func (d DinoActuator) Valid() bool {
+func (d DinoActuator) Valid() error {
 	if d.Name == "" {
-		return false
+		return errors.New("actuator has no name")
 	}
 
 	if d.Type != "onoff" {
-		return false
+		return errors.New(fmt.Sprintf("actuator %v has an invalid type", d.Name))
 	}
 
-	return true
+	return nil
 }

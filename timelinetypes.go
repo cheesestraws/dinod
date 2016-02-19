@@ -11,7 +11,7 @@ type Timeline struct {
 	Timeline     map[string][]int `json:"timeline"`
 }
 
-func (t Timeline) Validate(dinos Dinos) error {
+func (t Timeline) ValidateAgainst(dinos Dinos) error {
 	if t.DinoName == "" {
 		return fmt.Errorf("no dinoName provided")
 	}
@@ -49,4 +49,8 @@ func (t Timeline) Validate(dinos Dinos) error {
 	}
 
 	return nil
+}
+
+func (t Timeline) Valid() error {
+	return t.ValidateAgainst(getCurrentDinoList())
 }
