@@ -5,8 +5,12 @@ GET /caps - return an array of dinosaur definitions (see DinoDefinitions.txt) th
 
 GET /timelines - return an array of timelines currently loaded into the dino
 
-PUT /timelines - takes an array of timelines, replaces all timelines currently loaded into the dino with the timelines given.  Timelines with identical (dinoName, trigger) pairs will be considered as duplicates.  Error 500 if any of the timelines are invalid, and does not replace the existing timelines.
+POST /timelines - takes an array of timelines, replaces all timelines currently loaded into the dino with the timelines given.  Timelines with identical (dinoName, trigger) pairs will be considered as duplicates.  Error 500 if any of the timelines are invalid, and does not replace the existing timelines.
 
-POST /timelines - takes a timeline.  If there is no existing timeline with an existing (dinoName, trigger) pair, add this to the timeline list.  Otherwise, replace the existing timeline with the (dinoName, trigger) pair with this one.  Error 500 if the timeline is invalid.
+PUT /timelines - takes a timeline.  If there is no existing timeline with an existing (dinoName, trigger) pair, add this to the timeline list.  Otherwise, replace the existing timeline with the (dinoName, trigger) pair with this one.  Error 500 if the timeline is invalid.
 
 DELETE /timelines - clears out all timelines.  Returns an empty array.
+
+GET /sensors/<dinoname>/<sensorname>
+
+PUT /actuators/<dinoname>/<actuatorname>
