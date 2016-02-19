@@ -1,0 +1,66 @@
+DINOSAUR DEFINITIONS
+====================
+
+A dinosaur definition is a JSON file.  The file specifies the *sensors* of the dinosaur,
+the *actuators* of the dinosaur, and some human-readable metadata.
+
+
+TOP LEVEL
+---------
+
+A dinosaur is a JSON object:
+
+{
+    "name": "uk.co.ecliptiq.blackgangPi.t-rex",
+    "friendlyName": "Tyrannosaurus Rex",
+    "imageURI": "http://this.is.not.a.real.site/trex.jpg",
+    
+    "sensors": [ ... ]
+    "actuators": [ ... ]
+}
+
+The name is a computer-readable name.  It should not be displayed to the user.  Its purpose is to ensure that the incoming dinosaur sequence is for the right dinosaur.
+
+The friendlyName is a name that can be displayed to a human being.
+
+The imageURI is the URI of an image of the dinosaur.  Possibly this document ought to specify the size of said image, but it doesn't yet.
+
+The sensors are an array of sensor descriptions, as defined below.
+
+The actuators are an array of actuator descriptions, as defined below.
+
+
+SENSORS
+-------
+
+A sensor is a JSON object.
+
+{
+	"friendlyName": "PIR",
+	"type": "pulse",
+	"pin": 4
+}
+
+The friendlyName is the name of the sensor, as presented to the user.
+
+The type defines how the sensor works.  For the moment, "pulse" (for things such as PIR) is the only option.  Client implementations should disregard sensors with types they do not understand.  Server implementations should error.
+
+The pin defines the pin that the sensor is connected to.  The precise meaning of a pin number is defined by the server.
+
+
+ACTUATORS
+---------
+
+An actuator is a JSON object.
+
+{
+	"friendlyName": "leftLeg",
+	"type": "onoff",
+	"pin": 5
+}
+
+The friendlyName is the name of the actuator, as presented to the user.
+
+The type defines how the actuator works.  For the moment, "onoff" is the only option.  This corresponds to an actuator which is only either on or off.  The actuator types "speed" and "direction" should be considered reserved: the former refers to an actuator that is variable in speed, the latter refers to an actuator like a servo that moves to a specified direction and then stops.
+
+The pin defines the pin that the actuator is attached to.
