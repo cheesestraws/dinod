@@ -1,0 +1,40 @@
+DINOSAUR TIMELINES
+------------------
+
+A timeline is a sequence that a dinosaur follows.  It is encoded as a JSON object:
+
+{
+	"friendlyName": "Tango dance",
+	"dinoName": "uk.co.ecliptiq.blackgangPi.t-rex",
+	"trigger": "PIR",
+	"length": 30,
+	"timePerStep": 0.5,
+	"timeline": { ... }
+}
+
+The friendlyName is the name of the timeline as presented to the user.
+
+The dinoName is the machine-readable name of the dinosaur definition that this corresponds to.
+
+The trigger is the machine-readable name of the sensor that will trigger this action.  For the moment only "pulse" sensors have defined semantics.
+
+The length is the number of steps that the sequence occupies.
+
+The timePerStep is the number of seconds that each step corresponds to.
+
+The timeline is a timeline, as defined below.
+
+
+TIMELINES
+---------
+
+A timeline is a JSON object.
+
+{
+	"leftLeg": [ ... ],
+	"rightLeg": [ ... ],
+}
+
+Each field name must be the name of an actuator in the corresponding dinosaur definition.  Its value must be an array.  For onoff actuators, this should be an array of either booleans or ints.  If it is an array of ints, any value greater than zero is interpreted as on, any value less than or equal to zero is interpreted as off.
+
+If the array is longer than the length parameter of its enclosing timeline definition, then extra elements should be disregarded by both client and server implementations.  If it is shorter than the length parameter, then the last element of the array should be considered by both client and server implementations to be duplicated as many times as necessary to bring the length of the array up to the length.
