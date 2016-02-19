@@ -16,8 +16,36 @@ func (t Timeline) Validate(dinos Dinos) error {
 		return fmt.Errorf("no dinoName provided")
 	}
 
-	if dinos.FindDino(t.DinoName) == nil {
+	dino := dinos.FindDino(t.DinoName)
+	if dino == nil {
 		return fmt.Errorf("dinoName %v supplied but this dino does not exist", t.DinoName)
+	}
+
+	// check if trigger exists
+	foundTrigger := false
+	for _, sensor := range dino.Sensors {
+		if sensor.Name == t.Trigger {
+			foundTrigger = true
+		}
+	}
+
+	if !foundTrigger {
+		return fmt.Errorf("Trigger sensor %v does not exist in dino %v", t.Trigger, t.DinoName)
+	}
+
+	// Check that each actuator exists
+	// make a set of the actuators on the dino
+	actuators := make(map[string]struct{})
+	for _, actuator := range dino.Actuators {
+		actuators[actuator.Name] = struct{}{}
+	}
+
+	// and check each actuator on the timeline matches
+	for actuator, _ := range t.Timeline {
+		_, ok := actuators[actuator]
+		if !ok {
+			return fmt.Errorf("Timeline refers to actuator %v which is not present in dino %v", actuator, t.DinoName)
+		}
 	}
 
 	return nil
