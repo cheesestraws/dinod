@@ -36,10 +36,13 @@ SENSORS
 A sensor is a JSON object.
 
 {
+	"name": "PIR",
 	"friendlyName": "PIR",
 	"type": "pulse",
 	"pin": 4
 }
+
+The name is the name of the sensor as used in the API.  It should be unique per dino, but does not need to be globally unique.
 
 The friendlyName is the name of the sensor, as presented to the user.
 
@@ -54,10 +57,13 @@ ACTUATORS
 An actuator is a JSON object.
 
 {
-	"friendlyName": "leftLeg",
+	"name": "leftLeg",
+	"friendlyName": "Left leg",
 	"type": "onoff",
 	"pin": 5
 }
+
+The name is the name of the actuator as used in the API.  It should be unique per dino, but does not need to be globally unique.
 
 The friendlyName is the name of the actuator, as presented to the user.
 
