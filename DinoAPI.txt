@@ -14,3 +14,5 @@ DELETE /timelines - clears out all timelines.  Returns an empty array.
 GET /sensors/<dinoname>/<sensorname>
 
 PUT /actuators/<dinoname>/<actuatorname>
+
+POST /trigger/<dinoname>/<sensorname>

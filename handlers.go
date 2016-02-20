@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func sendJSON(thingy interface{}, w http.ResponseWriter) {
@@ -77,4 +79,10 @@ func handlePutTimelines(w http.ResponseWriter, r *http.Request) {
 
 func handleDeleteTimelines(w http.ResponseWriter, r *http.Request) {
 	deleteAllTimelines()
+}
+
+func handleTrigger(w http.ResponseWriter, r *http.Request) {
+	dino := mux.Vars(r)["dino"]
+	sensor := mux.Vars(r)["sensor"]
+	trigger(dino, sensor)
 }

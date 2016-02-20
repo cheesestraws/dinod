@@ -16,6 +16,7 @@ func makeMux() *http.ServeMux {
 	handle(router, "POST", "/timelines", handlePostTimelines)
 	handle(router, "PUT", "/timelines", handlePutTimelines)
 	handle(router, "DELETE", "/timelines", handleDeleteTimelines)
+	handle(router, "POST", "/trigger/{dino}/{sensor}", handleTrigger)
 
 	mux := http.NewServeMux()
 	mux.Handle("/", router)

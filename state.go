@@ -63,3 +63,7 @@ func deleteAllTimelines() []Timeline {
 	state.timelines.DeleteAllTimelines()
 	return state.timelines.GetAllTimelines()
 }
+
+func trigger(dino, sensor string) {
+	state.timelines.Trigger(dino, sensor)
+}

@@ -76,3 +76,15 @@ func (tr *TimelineRunners) GetAllTimelines() []Timeline {
 
 	return list
 }
+
+func (tr *TimelineRunners) Trigger(dino, sensor string) {
+	(&tr.mutex).Lock()
+	defer (&tr.mutex).Unlock()
+
+	// do we have an existing runner for this d, t pair?
+	pair := TR{dino, sensor}
+	runner, ok := tr.runners[pair]
+	if ok {
+		runner.Start()
+	}
+}

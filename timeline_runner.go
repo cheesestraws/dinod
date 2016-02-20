@@ -70,7 +70,6 @@ func (tr *TimelineRunner) runLoop() {
 
 // run this only from the runLoop goroutine
 func (tr *TimelineRunner) runStep() {
-	print("tick\n")
 	if !tr.Running {
 		return
 	}
@@ -78,9 +77,10 @@ func (tr *TimelineRunner) runStep() {
 	if tr.Step == tr.T.Length {
 		tr.Running = false
 		tr.Step = 0
+		return
 	}
 
-	print(".\n")
+	print("tick\n")
 
 	// do magical shit here
 
