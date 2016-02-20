@@ -6,7 +6,8 @@ import (
 	"github.com/kidoman/embd"
 )
 
-type LocalGPIO struct{}
+type LocalGPIO struct {
+}
 
 // compile time check it complies with gpio interface
 var _ = GPIO(LocalGPIO{})
@@ -21,8 +22,13 @@ func (g LocalGPIO) SetupInput(pin int) {
 
 func (g LocalGPIO) SetupOutput(pin int) {
 	pname := fmt.Sprintf("P1_%d", pin)
-	embd.SetDirection(pname, embd.Out)
-	embd.DigitalWrite(pname, embd.Low)
+	p, err := embd.NewDigitalPin(pname)
+	if err != nil {
+		fmt.Printf("Could not set %v to output: %v", pname, err)
+	}
+	p.SetDirection(embd.Out)
+	p.PullUp()
+	fmt.Printf("Pin %v is now an output", pname)
 }
 
 func (g LocalGPIO) SetPin(pin int, value int) {
