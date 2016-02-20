@@ -25,6 +25,18 @@ var state State = State{
 					Type:         "none",
 					Pin:          2,
 				},
+				DinoActuator{
+					Name:         "b",
+					FriendlyName: "actuator",
+					Type:         "none",
+					Pin:          2,
+				},
+				DinoActuator{
+					Name:         "c",
+					FriendlyName: "actuator",
+					Type:         "none",
+					Pin:          2,
+				},
 			},
 		},
 	},
