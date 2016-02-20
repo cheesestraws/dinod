@@ -1,6 +1,7 @@
 package main
 
 import "time"
+import "fmt"
 
 type TimelineRunner struct {
 	T       Timeline
@@ -80,9 +81,17 @@ func (tr *TimelineRunner) runStep() {
 		return
 	}
 
-	print("tick\n")
+	for actuatorName, actuatorSlice := range tr.T.Timeline {
+		var value int
 
-	// do magical shit here
+		if len(actuatorSlice) < tr.Step {
+			value = actuatorSlice[len(actuatorSlice)-1]
+		} else {
+			value = actuatorSlice[tr.Step]
+		}
+
+		fmt.Printf("(%v) %v => %v", tr.T.DinoName, actuatorName, value)
+	}
 
 	tr.Step += 1
 	if tr.Step == tr.T.Length {
