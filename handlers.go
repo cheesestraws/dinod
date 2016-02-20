@@ -15,7 +15,7 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS")
 	err := json.NewEncoder(w).Encode(thingy)
 	if err != nil {
-		print("Bad JSON")
+		fmt.Printf("Error: %v\n", err)
 		http.Error(w, fmt.Sprintf("JSON encoding error (probably a server bug): %v", err),
 			http.StatusInternalServerError)
 	}
@@ -24,7 +24,7 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 func readJSON(thingyPtr interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(thingyPtr)
 	if err != nil {
-		println("Bad input JSON")
+		fmt.Printf("Error: %v\n", err)
 		http.Error(w, fmt.Sprintf("JSON decoding error: %v", err),
 			http.StatusInternalServerError)
 		return err
