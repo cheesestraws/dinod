@@ -16,7 +16,7 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 	}
 }
 
-func readJSON(thingyPtr *Valider, w http.ResponseWriter, r *http.Request) error {
+func readJSON(thingyPtr interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(thingyPtr)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("JSON decoding error: %v", err),
@@ -31,13 +31,16 @@ func readJSON(thingyPtr *Valider, w http.ResponseWriter, r *http.Request) error 
 		return err
 	}
 
-	err = (*thingyPtr).Valid()
+	return nil
+}
+
+func validateObject(v Valider, w http.ResponseWriter) error {
+	err := v.Valid()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Valid JSON but invalid data: %v", err),
 			http.StatusInternalServerError)
 		return err
 	}
-
 	return nil
 }
 
@@ -50,16 +53,28 @@ func handleGetTimelines(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePostTimelines(w http.ResponseWriter, r *http.Request) {
-	var timeline Valider = Timeline{}
-	readJSON(&timeline, w, r)
-	str := fmt.Sprintf("%v", timeline)
-	print(str)
+	var timelines []Timeline
+	readJSON(&timelines, w, r)
+	for _, t := range timelines {
+		if validateObject(Valider(t), w) != nil {
+			return
+		}
+	}
+
+	sendJSON(replaceAllTimelines(timelines), w)
 }
 
 func handlePutTimelines(w http.ResponseWriter, r *http.Request) {
+	print("handlePutTimeline\n")
+	var timeline Timeline
+	readJSON(&timeline, w, r)
+	if validateObject(Valider(timeline), w) != nil {
+		return
+	}
 
+	sendJSON(addOrReplaceTimeline(timeline), w)
 }
 
-func handleDeleteTimeLines(w http.ResponseWriter, r *http.Request) {
-
+func handleDeleteTimelines(w http.ResponseWriter, r *http.Request) {
+	deleteAllTimelines()
 }
