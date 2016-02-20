@@ -62,11 +62,9 @@ func (tr *TimelineRunner) runLoop() {
 			tr.Running = false
 			tr.Alive = false
 			ticker.Stop()
-			break
+			tr.DeadC <- struct{}{}
 		}
 	}
-
-	tr.DeadC <- struct{}{}
 }
 
 // run this only from the runLoop goroutine

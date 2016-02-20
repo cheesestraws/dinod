@@ -34,6 +34,7 @@ func (tr *TimelineRunners) AddOrReplaceTimeline(tl Timeline) {
 	if ok {
 		// Yes, so kill it
 		runner.Die()
+		print("runner.Die returned\n")
 		// And remove it from the map
 		delete(tr.runners, pair)
 	}
