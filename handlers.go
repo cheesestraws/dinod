@@ -13,10 +13,9 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 	w.Header().Add("Content-Type", "text/json")
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS")
-	print("bar\n")
 	err := json.NewEncoder(w).Encode(thingy)
-	print("baz\n")
 	if err != nil {
+		print("Bad JSON")
 		http.Error(w, fmt.Sprintf("JSON encoding error (probably a server bug): %v", err),
 			http.StatusInternalServerError)
 	}
@@ -25,12 +24,14 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 func readJSON(thingyPtr interface{}, w http.ResponseWriter, r *http.Request) error {
 	err := json.NewDecoder(r.Body).Decode(thingyPtr)
 	if err != nil {
+		println("Bad input JSON")
 		http.Error(w, fmt.Sprintf("JSON decoding error: %v", err),
 			http.StatusInternalServerError)
 		return err
 	}
 
 	if thingyPtr == nil {
+		println("Invalid input JSON")
 		http.Error(w, "Valid JSON but invalid data: You sent a null.  Please don't.",
 			http.StatusInternalServerError)
 		err := errors.New("object unmarshalled to nil")
