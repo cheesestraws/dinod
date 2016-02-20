@@ -51,6 +51,10 @@ func handleGetDinos(w http.ResponseWriter, r *http.Request) {
 	sendJSON(getCurrentDinoList(), w)
 }
 
+func handleOptionsTimelines(w http.ResponseWriter, r *http.Request) {
+	sendJSON(struct{}{}, w)
+}
+
 func handleGetTimelines(w http.ResponseWriter, r *http.Request) {
 	sendJSON(getCurrentTimelines(), w)
 }
