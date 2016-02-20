@@ -12,6 +12,7 @@ func handle(router *mux.Router, method, url string, fn func(w http.ResponseWrite
 func makeMux() *http.ServeMux {
 	router := mux.NewRouter()
 	handle(router, "GET", "/caps", handleGetDinos)
+	handle(router, "OPTIONS", "/timelines", handleOptionsTimelines)
 	handle(router, "GET", "/timelines", handleGetTimelines)
 	handle(router, "POST", "/timelines", handlePostTimelines)
 	handle(router, "PUT", "/timelines", handlePutTimelines)
