@@ -10,9 +10,9 @@ import (
 )
 
 func sendJSON(thingy interface{}, w http.ResponseWriter) {
-	w.Header().Add("Content-type", "text/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS")
+	w.Header().Add("Content-Type", "text/json")
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS")
 	err := json.NewEncoder(w).Encode(thingy)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("JSON encoding error (probably a server bug): %v", err),
