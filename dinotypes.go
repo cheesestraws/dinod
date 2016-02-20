@@ -35,6 +35,26 @@ func (d Dino) Valid() error {
 	return nil
 }
 
+func (d Dino) FindSensor(name string) *DinoSensor {
+	for _, sensor := range d.Sensors {
+		if sensor.Name == name {
+			return &sensor
+		}
+	}
+
+	return nil
+}
+
+func (d Dino) FindActuator(name string) *DinoActuator {
+	for _, actuator := range d.Actuators {
+		if actuator.Name == name {
+			return &actuator
+		}
+	}
+
+	return nil
+}
+
 type Dinos []Dino
 
 func (d Dinos) FindDino(name string) *Dino {

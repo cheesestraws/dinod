@@ -1,8 +1,24 @@
 package main
 
+import "github.com/kidoman/embd" // ew this shouldn't be here TODO
+
 type State struct {
 	timelines TimelineRunners
-	dinos     []Dino
+	dinos     Dinos
+	gpio      GPIO
+}
+
+func (s *State) Init() {
+	host, _, _ := embd.DetectHost()
+	if host == embd.HostNull {
+		println("No real GPIO, using fake_gpio")
+		s.gpio = GPIO(FakeGPIO{})
+	} else {
+		println("Using embd GPIO")
+		s.gpio = GPIO(LocalGPIO{})
+	}
+
+	SetupGPIOForDinos(s.dinos, s.gpio)
 }
 
 var state State = State{
@@ -20,22 +36,22 @@ var state State = State{
 			},
 			Actuators: []DinoActuator{
 				DinoActuator{
-					Name:         "a",
+					Name:         "red",
 					FriendlyName: "actuator",
 					Type:         "none",
-					Pin:          2,
+					Pin:          33,
 				},
 				DinoActuator{
-					Name:         "b",
+					Name:         "amber",
 					FriendlyName: "actuator",
 					Type:         "none",
-					Pin:          2,
+					Pin:          35,
 				},
 				DinoActuator{
-					Name:         "c",
+					Name:         "green",
 					FriendlyName: "actuator",
 					Type:         "none",
-					Pin:          2,
+					Pin:          37,
 				},
 			},
 		},

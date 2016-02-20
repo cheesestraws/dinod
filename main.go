@@ -26,6 +26,8 @@ func makeMux() *http.ServeMux {
 }
 
 func main() {
+	state.Init()
+
 	handler := makeMux()
 
 	go func() {

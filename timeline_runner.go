@@ -88,7 +88,24 @@ func (tr *TimelineRunner) runStep() {
 			value = actuatorSlice[tr.Step]
 		}
 
-		fmt.Printf("(%v) %v => %v", tr.T.DinoName, actuatorName, value)
+		// find the actuator pin
+		dino := state.dinos.FindDino(tr.T.DinoName)
+		if dino == nil {
+			println("Dino is nil: something damned strange has happened.")
+			break
+		}
+
+		actuator := dino.FindActuator(actuatorName)
+		if actuator == nil {
+			println("Actuator is nil: something damned strange has happened.")
+			break
+		}
+
+		pin := actuator.Pin
+
+		fmt.Printf("(%v) %v ~ %v => %v\n", tr.T.DinoName, pin, actuatorName, value)
+
+		state.gpio.SetPin(pin, value)
 	}
 
 	tr.Step += 1

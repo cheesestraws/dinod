@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,9 +22,7 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 }
 
 func readJSON(thingyPtr interface{}, w http.ResponseWriter, r *http.Request) error {
-	str, _ := ioutil.ReadAll(r.Body)
-	fmt.Printf("Raw request: %s\n", string(str))
-	err := json.Unmarshal(str, thingyPtr)
+	err := json.NewDecoder(r.Body).Decode(thingyPtr)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		http.Error(w, fmt.Sprintf("JSON decoding error: %v", err),
@@ -84,8 +81,6 @@ func handlePutTimelines(w http.ResponseWriter, r *http.Request) {
 	if validateObject(Valider(timeline), w) != nil {
 		return
 	}
-
-	print("fooo\n")
 
 	sendJSON(addOrReplaceTimeline(timeline), w)
 }
