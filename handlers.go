@@ -68,7 +68,6 @@ func handlePostTimelines(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlePutTimelines(w http.ResponseWriter, r *http.Request) {
-	print("handlePutTimeline\n")
 	var timeline Timeline
 	readJSON(&timeline, w, r)
 	if validateObject(Valider(timeline), w) != nil {
