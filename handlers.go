@@ -18,6 +18,7 @@ func sendJSON(thingy interface{}, w http.ResponseWriter) {
 		http.Error(w, fmt.Sprintf("JSON encoding error (probably a server bug): %v", err),
 			http.StatusInternalServerError)
 	}
+	w.WriteHeader(200)
 }
 
 func readJSON(thingyPtr interface{}, w http.ResponseWriter, r *http.Request) error {
