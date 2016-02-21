@@ -12,7 +12,7 @@ func SetupGPIOForDinos(dinos Dinos, g GPIO) {
 	for _, dino := range dinos {
 		// Sensors are all input.
 		for _, sensor := range dino.Sensors {
-			g.SetupInput(sensor.Pin)
+			g.SetupInput(sensor.Pin, dino.Name, sensor.Name)
 		}
 		for _, actuator := range dino.Actuators {
 			g.SetupOutput(actuator.Pin)
