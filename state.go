@@ -2,11 +2,29 @@ package main
 
 import "github.com/kidoman/embd" // ew this shouldn't be here TODO
 import "encoding/json"
+import "io/ioutil"
 
 type State struct {
 	timelines TimelineRunners
 	dinos     Dinos
 	gpio      GPIO
+}
+
+func (s *State) LoadConfig(filename string) error {
+	// we should have a specific Config type, really
+	str, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	var dinos Dinos
+	err = json.Unmarshal([]byte(str), &dinos)
+	if err != nil {
+		return err
+	}
+
+	s.dinos = dinos
+	return nil
 }
 
 func (s *State) Init() {
@@ -20,46 +38,9 @@ func (s *State) Init() {
 	}
 
 	SetupGPIOForDinos(s.dinos, s.gpio)
-	str, _ := json.Marshal(s.dinos)
-	println(string(str))
 }
 
-var state State = State{
-	dinos: []Dino{
-		Dino{
-			Name:         "d",
-			FriendlyName: "test dino",
-			Sensors: []DinoSensor{
-				DinoSensor{
-					Name:         "s",
-					FriendlyName: "sensor",
-					Type:         "none",
-					Pin:          3,
-				},
-			},
-			Actuators: []DinoActuator{
-				DinoActuator{
-					Name:         "red",
-					FriendlyName: "actuator",
-					Type:         "none",
-					Pin:          33,
-				},
-				DinoActuator{
-					Name:         "amber",
-					FriendlyName: "actuator",
-					Type:         "none",
-					Pin:          35,
-				},
-				DinoActuator{
-					Name:         "green",
-					FriendlyName: "actuator",
-					Type:         "none",
-					Pin:          37,
-				},
-			},
-		},
-	},
-}
+var state State
 
 func getCurrentDinoList() Dinos {
 	return state.dinos

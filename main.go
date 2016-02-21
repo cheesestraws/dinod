@@ -26,6 +26,11 @@ func makeMux() *http.ServeMux {
 }
 
 func main() {
+	err := state.LoadConfig("dinos.conf")
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
 	state.Init()
 
 	handler := makeMux()
@@ -34,6 +39,6 @@ func main() {
 		http.ListenAndServe("localhost:6060", nil)
 	}()
 
-	err := http.ListenAndServe(":8080", handler)
+	err = http.ListenAndServe(":8080", handler)
 	fmt.Printf("http server died because: %v", err)
 }
