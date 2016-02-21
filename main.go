@@ -32,6 +32,7 @@ func main() {
 		return
 	}
 	state.Init()
+	state.RestoreTimelines("timelines.json")
 
 	handler := makeMux()
 

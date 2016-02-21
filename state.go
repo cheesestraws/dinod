@@ -5,9 +5,10 @@ import "encoding/json"
 import "io/ioutil"
 
 type State struct {
-	timelines TimelineRunners
-	dinos     Dinos
-	gpio      GPIO
+	timelines    TimelineRunners
+	timelineFile string
+	dinos        Dinos
+	gpio         GPIO
 }
 
 func (s *State) LoadConfig(filename string) error {
@@ -25,6 +26,30 @@ func (s *State) LoadConfig(filename string) error {
 
 	s.dinos = dinos
 	return nil
+}
+
+func (s *State) RestoreTimelines(filename string) error {
+	s.timelineFile = filename
+
+	str, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	var tls []Timeline
+	err = json.Unmarshal([]byte(str), &tls)
+	if err != nil {
+		return err
+	}
+
+	state.timelines.ReplaceAllTimelines(tls)
+	return nil
+}
+
+func (s *State) SaveTimelines() error {
+	tls := s.timelines.GetAllTimelines()
+	json, _ := json.Marshal(tls)
+	return ioutil.WriteFile(s.timelineFile, json, 0664)
 }
 
 func (s *State) Init() {
@@ -57,6 +82,7 @@ func replaceAllTimelines(ts []Timeline) []Timeline {
 
 func addOrReplaceTimeline(ts Timeline) []Timeline {
 	state.timelines.AddOrReplaceTimeline(ts)
+	state.SaveTimelines()
 	return state.timelines.GetAllTimelines()
 }
 
