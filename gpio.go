@@ -19,3 +19,13 @@ func SetupGPIOForDinos(dinos Dinos, g GPIO) {
 		}
 	}
 }
+
+func SetupGPIOForDino(dino Dino, g GPIO) {
+	// Sensors are all input.
+	for _, sensor := range dino.Sensors {
+		g.SetupInput(sensor.Pin, dino.Name, sensor.Name)
+	}
+	for _, actuator := range dino.Actuators {
+		g.SetupOutput(actuator.Pin)
+	}
+}

@@ -53,16 +53,26 @@ func (s *State) SaveTimelines() error {
 }
 
 func (s *State) Init() {
+	for _, d := range s.dinos {
+		gpio := s.gpioBackendFor(d)
+		SetupGPIOForDino(d, gpio)
+		s.gpio = gpio
+	}
+
+}
+
+func (s *State) gpioBackendFor(d Dino) GPIO {
+	var gpio GPIO
 	host, _, _ := embd.DetectHost()
 	if host == embd.HostNull {
 		println("No real GPIO, using fake_gpio")
-		s.gpio = GPIO(FakeGPIO{})
+		gpio = GPIO(FakeGPIO{})
 	} else {
 		println("Using embd GPIO")
-		s.gpio = GPIO(&LocalGPIO{})
+		gpio = GPIO(&LocalGPIO{})
 	}
 
-	SetupGPIOForDinos(s.dinos, s.gpio)
+	return gpio
 }
 
 var state State
