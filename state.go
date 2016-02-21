@@ -31,7 +31,7 @@ var state State = State{
 					Name:         "s",
 					FriendlyName: "sensor",
 					Type:         "none",
-					Pin:          36,
+					Pin:          3,
 				},
 			},
 			Actuators: []DinoActuator{
