@@ -1,6 +1,6 @@
 package main
 
-import "github.com/kidoman/embd" // ew this shouldn't be here TODO
+import _ "github.com/kidoman/embd" // ew this shouldn't be here TODO
 import "encoding/json"
 import "io/ioutil"
 
@@ -68,14 +68,17 @@ func (s *State) Init() {
 
 func (s *State) gpioBackendFor(d Dino) GPIO {
 	var gpio GPIO
-	host, _, _ := embd.DetectHost()
+	/* host, _, _ := embd.DetectHost()
 	if host == embd.HostNull {
 		println("No real GPIO, using fake_gpio")
 		gpio = GPIO(FakeGPIO{})
 	} else {
 		println("Using embd GPIO")
 		gpio = GPIO(&LocalGPIO{})
-	}
+	} */
+
+	gpio = &MQTT_GPIO{}
+	gpio.Init()
 
 	return gpio
 }
