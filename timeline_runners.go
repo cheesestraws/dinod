@@ -44,6 +44,31 @@ func (tr *TimelineRunners) AddOrReplaceTimeline(tl Timeline) {
 	tr.runners[pair] = runner
 }
 
+func (tr *TimelineRunners) ReplaceAllTimelines(tls []Timeline) {
+	(&tr.mutex).Lock()
+	defer (&tr.mutex).Unlock()
+
+	// lazily instantiate the map
+	if tr.runners == nil {
+		tr.runners = make(map[TR]*TimelineRunner)
+	}
+
+	// kill all existing timelines
+	for pair, runner := range tr.runners {
+		runner.Die()
+		delete(tr.runners, pair)
+	}
+
+	for _, tl := range tls {
+		d := tl.DinoName
+		t := tl.Trigger
+		pair := TR{d, t}
+		runner := NewTimelineRunner(tl)
+		runner.Live()
+		tr.runners[pair] = runner
+	}
+}
+
 func (tr *TimelineRunners) DeleteAllTimelines() {
 	(&tr.mutex).Lock()
 	defer (&tr.mutex).Unlock()

@@ -51,7 +51,8 @@ func getCurrentTimelines() []Timeline {
 }
 
 func replaceAllTimelines(ts []Timeline) []Timeline {
-	return []Timeline{}
+	state.timelines.ReplaceAllTimelines(ts)
+	return state.timelines.GetAllTimelines()
 }
 
 func addOrReplaceTimeline(ts Timeline) []Timeline {
