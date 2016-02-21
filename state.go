@@ -1,6 +1,6 @@
 package main
 
-import _ "github.com/kidoman/embd" // ew this shouldn't be here TODO
+import "github.com/kidoman/embd" // ew this shouldn't be here TODO
 import "encoding/json"
 import "io/ioutil"
 
@@ -70,7 +70,7 @@ func (s *State) gpioBackendFor(d Dino) GPIO {
 	var gpio GPIO
 
 	if d.Backend == "mqtt" {
-		gpio = GPIO(&MQTT_GPIO)
+		gpio = GPIO(&MQTT_GPIO{})
 	} else {
 		host, _, _ := embd.DetectHost()
 		if host == embd.HostNull {
