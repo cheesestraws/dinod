@@ -1,6 +1,7 @@
 package main
 
 import "github.com/kidoman/embd" // ew this shouldn't be here TODO
+import "encoding/json"
 
 type State struct {
 	timelines TimelineRunners
@@ -19,6 +20,8 @@ func (s *State) Init() {
 	}
 
 	SetupGPIOForDinos(s.dinos, s.gpio)
+	str, _ := json.Marshal(s.dinos)
+	println(string(str))
 }
 
 var state State = State{

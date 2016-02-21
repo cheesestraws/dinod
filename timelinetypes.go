@@ -16,6 +16,10 @@ func (t Timeline) ValidateAgainst(dinos Dinos) error {
 		return fmt.Errorf("no dinoName provided")
 	}
 
+	if t.TimePerStep <= 0 {
+		return fmt.Errorf("invalid timePerStep")
+	}
+
 	dino := dinos.FindDino(t.DinoName)
 	if dino == nil {
 		return fmt.Errorf("dinoName %v supplied but this dino does not exist", t.DinoName)
