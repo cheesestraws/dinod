@@ -15,7 +15,7 @@ func (g FakeGPIO) Init() {
 
 func (g FakeGPIO) SetupInput(pin int, dinoName string, sensorName string) {
 	// do nothing for the moment
-	fmt.Printf("Pin %v is henceforth an output (%v, %v)\n", pin, dinoName, sensorName)
+	fmt.Printf("Pin %v is henceforth an input (%v, %v)\n", pin, dinoName, sensorName)
 }
 
 func (g FakeGPIO) SetupOutput(pin int) {
