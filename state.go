@@ -15,7 +15,7 @@ func (s *State) Init() {
 		s.gpio = GPIO(FakeGPIO{})
 	} else {
 		println("Using embd GPIO")
-		s.gpio = GPIO(LocalGPIO{})
+		s.gpio = GPIO(&LocalGPIO{})
 	}
 
 	SetupGPIOForDinos(s.dinos, s.gpio)
@@ -31,7 +31,7 @@ var state State = State{
 					Name:         "s",
 					FriendlyName: "sensor",
 					Type:         "none",
-					Pin:          1,
+					Pin:          36,
 				},
 			},
 			Actuators: []DinoActuator{
