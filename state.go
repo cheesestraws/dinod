@@ -82,7 +82,6 @@ func (s *State) gpioBackendFor(d Dino) GPIO {
 		}
 	}
 
-	gpio = &MQTT_GPIO{}
 	gpio.Init()
 
 	return gpio
