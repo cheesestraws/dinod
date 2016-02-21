@@ -47,6 +47,7 @@ func (g *LocalGPIO) SetupInput(pin int) {
 	// just use Watch()
 	p.Watch(embd.EdgeRising, func(p embd.DigitalPin) {
 		if time.Since(lastTrigger) < debounceInterval {
+			fmt.Printf("... disregarding trigger due to debounce: %v\n", lastTrigger)
 			return
 		}
 
