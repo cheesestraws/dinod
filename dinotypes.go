@@ -11,6 +11,7 @@ type Dino struct {
 	ImageURI     string         `json:"imageURI"`
 	Sensors      []DinoSensor   `json:"sensors"`
 	Actuators    []DinoActuator `json:"actuators"`
+	Backend      string         `json:"backend"`
 }
 
 func (d Dino) Valid() error {

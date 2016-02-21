@@ -68,14 +68,19 @@ func (s *State) Init() {
 
 func (s *State) gpioBackendFor(d Dino) GPIO {
 	var gpio GPIO
-	/* host, _, _ := embd.DetectHost()
-	if host == embd.HostNull {
-		println("No real GPIO, using fake_gpio")
-		gpio = GPIO(FakeGPIO{})
+
+	if d.Backend == "mqtt" {
+		gpio = GPIO(&MQTT_GPIO)
 	} else {
-		println("Using embd GPIO")
-		gpio = GPIO(&LocalGPIO{})
-	} */
+		host, _, _ := embd.DetectHost()
+		if host == embd.HostNull {
+			println("No real GPIO, using fake_gpio")
+			gpio = GPIO(FakeGPIO{})
+		} else {
+			println("Using embd GPIO")
+			gpio = GPIO(&LocalGPIO{})
+		}
+	}
 
 	gpio = &MQTT_GPIO{}
 	gpio.Init()
