@@ -60,13 +60,12 @@ func (s *State) SaveTimelines() error {
 }
 
 func (s *State) Init() {
-	for _, d := range s.dinos {
-		gpio := s.gpioBackendFor(d.Dino)
-		SetupGPIOForDino(d.Dino, gpio)
-		d.gpio = gpio
+	for i := range s.dinos {
+		gpio := s.gpioBackendFor(s.dinos[i].Dino)
+		SetupGPIOForDino(s.dinos[i].Dino, gpio)
+		s.dinos[i].gpio = gpio
 		s.gpio = gpio
 	}
-
 }
 
 func (s *State) gpioBackendFor(d Dino) GPIO {

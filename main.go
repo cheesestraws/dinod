@@ -34,6 +34,10 @@ func main() {
 	state.Init()
 	state.RestoreTimelines("timelines.json")
 
+	for _, d := range state.dinos {
+		fmt.Printf("%v => %v \n", d.Dino.Name, d.gpio)
+	}
+
 	handler := makeMux()
 
 	go func() {
