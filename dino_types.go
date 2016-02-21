@@ -1,5 +1,10 @@
 package main
 
+/*
+dino_types.go contains type definitions for dinosaurs (or, if you must, something less
+interesting than dinosaurs)
+*/
+
 import (
 	"errors"
 	"fmt"
