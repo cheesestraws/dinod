@@ -26,6 +26,8 @@ func makeMux() *http.ServeMux {
 }
 
 func main() {
+	forciblyUnwedgeGPIO()
+
 	err := state.LoadConfig("dinos.conf")
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
