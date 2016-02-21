@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/kidoman/embd"
 )
+
+const debounceInterval = 20 * time.Millisecond
 
 type PI struct { // a pair of integers
 	a int
@@ -37,10 +40,20 @@ func (g *LocalGPIO) SetupInput(pin int) {
 	p.SetDirection(embd.In)
 	p.PullUp()
 
+	// debouncing
+	lastTrigger := time.Now()
+
 	// Watch interrupts are all triggered on one goroutine so we're fairly safe to
 	// just use Watch()
 	p.Watch(embd.EdgeRising, func(p embd.DigitalPin) {
+		if time.Since(lastTrigger) < debounceInterval {
+			return
+		}
+
+		lastTrigger = time.Now()
+
 		fmt.Printf("Sensor pin %v triggered.\n", pin)
+
 	})
 
 	fmt.Printf("Pin %v is now an input\n", pname)
