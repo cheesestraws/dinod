@@ -42,6 +42,9 @@ func (g *LocalGPIO) SetupInput(pin int) {
 	p.Watch(embd.EdgeRising, func(p embd.DigitalPin) {
 		fmt.Printf("Sensor pin %v triggered.\n", pin)
 	})
+
+	fmt.Printf("Pin %v is now an input\n", pname)
+
 }
 
 func (g *LocalGPIO) SetupOutput(pin int) {
