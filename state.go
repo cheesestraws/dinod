@@ -9,7 +9,6 @@ type State struct {
 	timelineFile string
 	dinos        DinoStates
 	rawDinos     Dinos
-	gpio         GPIO
 }
 
 func (s *State) LoadConfig(filename string) error {
@@ -64,7 +63,6 @@ func (s *State) Init() {
 		gpio := s.gpioBackendFor(s.dinos[i].Dino)
 		SetupGPIOForDino(s.dinos[i].Dino, gpio)
 		s.dinos[i].gpio = gpio
-		s.gpio = gpio
 	}
 }
 
