@@ -55,11 +55,27 @@ func (d Dino) FindActuator(name string) *DinoActuator {
 	return nil
 }
 
+type DinoState struct {
+	Dino
+	gpio GPIO
+}
+
 type Dinos []Dino
 
 func (d Dinos) FindDino(name string) *Dino {
 	for _, dino := range d {
 		if dino.Name == name {
+			return &dino
+		}
+	}
+	return nil
+}
+
+type DinoStates []DinoState
+
+func (d DinoStates) FindDinoState(name string) *DinoState {
+	for _, dino := range d {
+		if dino.Dino.Name == name {
 			return &dino
 		}
 	}

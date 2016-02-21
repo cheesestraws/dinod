@@ -7,7 +7,8 @@ import "io/ioutil"
 type State struct {
 	timelines    TimelineRunners
 	timelineFile string
-	dinos        Dinos
+	dinos        DinoStates
+	rawDinos     Dinos
 	gpio         GPIO
 }
 
@@ -24,7 +25,13 @@ func (s *State) LoadConfig(filename string) error {
 		return err
 	}
 
-	s.dinos = dinos
+	s.rawDinos = dinos
+
+	for _, d := range dinos {
+		ds := DinoState{d, nil}
+		s.dinos = append(s.dinos, ds)
+	}
+
 	return nil
 }
 
@@ -54,8 +61,9 @@ func (s *State) SaveTimelines() error {
 
 func (s *State) Init() {
 	for _, d := range s.dinos {
-		gpio := s.gpioBackendFor(d)
-		SetupGPIOForDino(d, gpio)
+		gpio := s.gpioBackendFor(d.Dino)
+		SetupGPIOForDino(d.Dino, gpio)
+		d.gpio = gpio
 		s.gpio = gpio
 	}
 
@@ -78,7 +86,7 @@ func (s *State) gpioBackendFor(d Dino) GPIO {
 var state State
 
 func getCurrentDinoList() Dinos {
-	return state.dinos
+	return state.rawDinos
 }
 
 func getCurrentTimelines() []Timeline {
