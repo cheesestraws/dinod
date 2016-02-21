@@ -2,7 +2,7 @@ package main
 
 type GPIO interface {
 	Init()
-	SetupInput(pin int)
+	SetupInput(pin int, dinoName string, sensorName string)
 	SetupOutput(pin int)
 	SetPin(pin int, value int)
 }

@@ -28,7 +28,7 @@ func (g *LocalGPIO) Init() {
 	embd.InitGPIO()
 }
 
-func (g *LocalGPIO) SetupInput(pin int) {
+func (g *LocalGPIO) SetupInput(pin int, dinoName string, sensorName string) {
 	(&g.mutex).Lock()
 	defer (&g.mutex).Unlock()
 
@@ -47,17 +47,17 @@ func (g *LocalGPIO) SetupInput(pin int) {
 	// just use Watch()
 	p.Watch(embd.EdgeRising, func(p embd.DigitalPin) {
 		if time.Since(lastTrigger) < debounceInterval {
-			fmt.Printf("... disregarding trigger due to debounce: %v\n", lastTrigger)
 			return
 		}
 
 		lastTrigger = time.Now()
 
 		fmt.Printf("Sensor pin %v triggered.\n", pin)
+		trigger(dinoName, sensorName)
 
 	})
 
-	fmt.Printf("Pin %v is now an input\n", pname)
+	fmt.Printf("Pin %v is now an input (prodding sensor %v / %v)\n", pname, dinoName, sensorName)
 
 }
 
