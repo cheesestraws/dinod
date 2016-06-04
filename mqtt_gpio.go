@@ -30,7 +30,13 @@ func (g *MQTT_GPIO) Init() {
 
 func (g *MQTT_GPIO) SetupInput(pin int, dinoName string, sensorName string) {
 	// do nothing for the moment
-	fmt.Printf("Pin %v is henceforth an output (%v, %v)\n", pin, dinoName, sensorName)
+	fmt.Printf("Pin %v is henceforth an input (%v, %v)\n", pin, dinoName, sensorName)
+
+	topic := fmt.Sprintf("dinod/input/%d", pin)
+	f := func(cli *mqtt.Client, mes mqtt.Message) {
+		trigger(dinoName, sensorName)
+	}
+	g.client.Subscribe(topic, 0, mqtt.MessageHandler(f))
 }
 
 func (g *MQTT_GPIO) SetupOutput(pin int) {
